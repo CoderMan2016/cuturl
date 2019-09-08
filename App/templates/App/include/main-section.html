@@ -1,0 +1,56 @@
+{% load staticfiles %}
+<section id="main">
+  <div class="container" {% if not short_link %}data-aos="fade-up"{% else %}data-aos="fade-in"{% endif %}>
+    <div class="row typed__wrapper">
+      <h1 id="typed" class="display-4 mx-auto text-primary"></h1>
+    </div>
+    <div class="row main_input_wrapper">
+      <div class="col col-xl-8 xol-lg-8 col-md-12 mx-auto">
+        <form id="main-form">
+          {% csrf_token %}
+          {% if short_link %}
+            <div class="input-group mb-3">
+              <input type="text" id="clip" class="form-control cu__input__group clipboard-data" value="https://cuturl.pythonanywhere.ru/{{ short_link }}" readonly>
+              <div class="input-group-append">
+                <button class="btn btn-md btn-primary m-0 px-4 input-group-append-main btn-clipboard py-1 z-depth-0 waves-effect" onclick="show_notification()" data-clipboard-target="#clip" type="button" id="button-addon2" title="Скопировать"><i class="far fa-copy fa-3x"></i></button>
+              </div>
+            </div>
+            <a class="d-block text-center text-primary" onclick="reset()">Сжать еще одну ссылку</a>
+          {% else %}
+            <input type="text" class="cu__input {% if is_error %}is_invalid{% endif %}" name="cu__input" autofocus="true" id="cu__input" {% if short_link %}value="https://cuturl.pythonanywhere.ru/{{ short_link }}"{% endif %}>
+            {% if is_error %}
+              <div class="invalid-feedback">
+                Неккоректная ссылка
+              </div>
+            {% endif %}
+          {% endif %}
+        </form>
+      </div>
+    </div>
+    <div class="row mt-4">
+      {% if short_link %}
+        <p class="text-center w-100">Поделиться:</p>
+        <div class="col text-center">
+          <button type="button" onclick="document.location.href='https://vk.com/share.php?url=https://cuturl.pythonanywhere.ru/{{ short_link }}'" class="btn btn-primary px-3 pl-2 pr-2 mx-auto"><i class="fab fa-vk fa-2x" aria-hidden="true"></i></button>
+          <button type="button" class="btn btn-primary px-3 pl-4 pr-4 mx-auto"><i class="fab fa-facebook-f fa-2x" aria-hidden="true"></i></button>
+          <button type="button" class="btn btn-primary px-3 pl-2 pr-2 mx-auto"><i class="fab fa-twitter fa-2x" aria-hidden="true"></i></button>
+        </div>
+        <div class="col">
+            <div class="media">
+              <img class="d-flex align-self-center mr-3" src="/static/QR/{{short_link}}_qr_.jpg" width="200px">
+              <div class="media-body">
+                <h3 class="mt-0 font-weight-bold">QR код</h3>
+                <p class="lead">Скачайте его, и распечатайте на стену. Ну или просто добавьте в документ...</p>
+                <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+                  <a download class="btn btn-info border-0" href='/static/QR/{{short_link}}_qr_.jpg'>Скачать JPG</a>
+                  <a download class="btn btn-primary border-0" href='/static/QR/{{short_link}}_qr_.svg'>Скачать SVG</a>
+                </div>
+              </div>
+            </div>
+          </div>
+      {% else %}
+        <button type="button" name="button" id="cut_url__button" class="btn btn-primary rounded mx-auto" onclick="cut_link()">Сократить</button>
+      {% endif %}
+    </div>
+  </div>
+</section>

@@ -43,7 +43,7 @@ function cut_link(){
       var clipboard = new ClipboardJS('.btn-clipboard');
     },
     error: function(responce){
-      console.log(2);
+      console.error('error');
     }
   })
 }
